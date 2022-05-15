@@ -2,8 +2,6 @@ package Observer;
 import Game;
 // 피해량 출력
 public class DmgRate {
-    String player;
-
     // 임시 변수 생성(다른 클래스에서 호출받을 것들)
     int mycell;
     int enemycell;
@@ -13,10 +11,10 @@ public class DmgRate {
     enemySubM enemy = new enemySubM();
 
     // 공격이 상대방에게 맞았다면
-    public void attack(enemySubM enemy) {
-        if ( enemycell > 0 ) {
+    public void attack() {
+        if (enemycell > 0) {
 
-            enemy.enemycell  = enemy.enemycell - 2;
+            enemy.enemycell = enemy.enemycell - 2;
             System.out.println("적 함대의 체력이 2만큼 닳았습니다");
             System.out.println("적 함대의 남은 체력 : " + enemycell);
 
@@ -31,11 +29,11 @@ public class DmgRate {
     }
 
     // 내가 공격을 당했다면
-    public void attack(SubM mysub) {
-        if ( enemycell > 0 ) {
+    public void attacked() {
+        if (enemycell > 0) {
 
             // 공격 당했을때의 줄어든 체력 계산 및 남은 체력 출력
-            mysub.mycell  = mysub.mycell - 1;
+            mysub.mycell = mysub.mycell - 1;
             System.out.println("내 함대의 체력이 1만큼 닳았습니다");
             System.out.println("내 함대의 남은 체력 : " + mycell);
 
