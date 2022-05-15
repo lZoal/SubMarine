@@ -12,12 +12,6 @@ public class DmgRate {
     SubM mysub = new SubM();
     enemySubM enemy = new enemySubM();
 
-    //생성자
-    public DmgRate(String p)  {
-
-        player = p;
-    }
-
     // 공격이 상대방에게 맞았다면
     public void attack(enemySubM enemy) {
         if ( enemycell > 0 ) {
