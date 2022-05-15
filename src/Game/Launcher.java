@@ -6,7 +6,7 @@ public class Launcher {
 //        GameBust game= new GameBust();
 //        game.SetUpGame();
 //        game.StartPlaying();
-        GameHelper game = new GameHelper();
-        game.printGrid();
+            GameHelper game = new GameHelper();
+            game.printGrid();
     }
 }

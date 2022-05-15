@@ -17,6 +17,7 @@ public class GameHelper {
         gridSize=girdLength*girdLength;
         SetGrid();
     }
+
     private void SetGrid(){ //그리드 배치
             int row=0;
             String temp;

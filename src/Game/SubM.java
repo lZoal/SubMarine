@@ -1,7 +1,6 @@
 package Game;
 //각 잠수함의 부모객체
 
-
 public class SubM {
     private String name; //이름
     private int cell,size,move;
