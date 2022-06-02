@@ -6,7 +6,10 @@ public class Launcher {
 //        GameBust game= new GameBust();
 //        game.SetUpGame();
 //        game.StartPlaying();
-        GameHelper game = new GameHelper();
+        GameHelper game = new GameHelper(10);
+        SubM test= new SubM();
+        test.setName("test");
+        game.PlaceSubMarine(test);
         game.printGrid();
     }
 }
