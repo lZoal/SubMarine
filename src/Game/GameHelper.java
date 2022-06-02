@@ -18,7 +18,7 @@ public class GameHelper {
         }
         Grid() {
             grid=0;
-            pos=0;
+            pos="null";
         }
 
     }
@@ -62,25 +62,28 @@ public class GameHelper {
         int attempt= marine.getSize(),rand;
         int select;
         rand=(int)((Math.random()*10000)%(gridSize-1));
-
+        System.out.println("랜덤수 지정 " + rand);
             if(grid.get(rand).isUse ==false) {
+                System.out.println("미사용중확인");
                 grid.get(rand).isUse=true;
                 grid.get(rand).sub.setName(marine.getName());
                 grid.get(rand).sub.setHeader();
                 while(attempt-- !=0) {
                     select=(int)((Math.random()*10000)%3); //0상 1하 2좌 3우
+                    System.out.println("선택값 " + select);
                     while(true) {
-                        if(select ==0 && (rand <gridLength || grid.get(rand).isUse) ) {
-                            select=(int)((Math.random()*10000)%3);
+                        System.out.println("재선택됨" + select);
+                        if(select ==0 && (rand <gridLength || grid.get(rand-gridLength).isUse) ) {
+                            select=(int)((Math.random()*10000)%4);
                         }
-                        else if(select ==1 && (rand >gridSize-gridLength || grid.get(rand).isUse) ) {
-                            select=(int)((Math.random()*10000)%3);
+                        else if(select ==1 && (rand >gridSize-gridLength || grid.get(rand+gridLength).isUse) ) {
+                            select=(int)((Math.random()*10000)%4);
                         }
-                        else if(select ==2 && (rand%gridLength ==0 || grid.get(rand).isUse) ) {
-                            select=(int)((Math.random()*10000)%3);
+                        else if(select ==2 && (rand%gridLength ==0 || grid.get(rand-1).isUse) ) {
+                            select=(int)((Math.random()*10000)%4);
                         }
-                        else if(select ==3 && (rand%(gridLength-1) ==gridSize || grid.get(rand).isUse) ) {
-                            select=(int)((Math.random()*10000)%3);
+                        else if(select ==3 && (rand%(gridLength-1) ==gridSize || grid.get(rand+1).isUse) ) {
+                            select=(int)((Math.random()*10000)%4);
                         }
                         else {
                             switch(select) {
@@ -122,7 +125,13 @@ public class GameHelper {
         for(Grid i : grid) {
             cnt++;
             if(i.isUse==false) {
-                System.out.printf("%3d ", i.grid);
+                System.out.printf("%3s ", i.pos);
+            }
+            else if(i.sub.getHeader()){
+                System.out.printf("%3c ",'o');
+            }
+            else {
+                System.out.printf("%3c ",'x');
             }
             if(cnt%gridLength==0)
                 System.out.println();

@@ -7,9 +7,14 @@ public class Launcher {
 //        game.SetUpGame();
 //        game.StartPlaying();
         GameHelper game = new GameHelper(10);
-        SubM test= new SubM();
+        SubM test= new SubM(),com1=new SubM(),com2=new SubM();
         test.setName("test");
+        com1.setName("com1");
+        com2.setName("com2");
+        game.printGrid();
         game.PlaceSubMarine(test);
+        game.PlaceSubMarine(com1);
+        game.PlaceSubMarine(com2);
         game.printGrid();
     }
 }
