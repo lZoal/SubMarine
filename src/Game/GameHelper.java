@@ -1,13 +1,10 @@
 package Game;
-import Observer.PrintGame;
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Set;
+
+import java.util.*;
 
 //게임의 기본적인 세팅 그리드 사이즈 및 잠수함 위치시키기
 public class GameHelper {
-    private class Grid {
+    private static class Grid {
         int grid;
         String pos;
         boolean isUse = false;
@@ -16,18 +13,16 @@ public class GameHelper {
             grid=g;
             pos=p;
         }
-        Grid() {
-            grid=0;
-            pos="null";
-        }
+        Grid next;
+
+        public void setNext(Grid temp) { next= temp;}
+        public Grid getNext() {return next;}
 
     }
 
     private static final String alphabet="abcdefghijklmnopqrstuvwxyz";
     private static int gridLength;
-    private int gridSize;
-    private int SubCount =0;
-    private Random rand=new Random(10);
+    private final int gridSize;
     private ArrayList<Grid> grid =new ArrayList<Grid>(); //ArrayList를 통한 논리적 배열만들기
     GameHelper(){
         this(10);
@@ -53,7 +48,7 @@ public class GameHelper {
                 for (int i = 0; i < gridLength; i++) {
                     temp = String.valueOf(alphabet.charAt(row));
                     temp = temp.concat(String.valueOf(i));
-                    grid.add(new Grid(cnt++,temp));
+                    grid.add(new Grid(cnt++, temp));
                 }
             }
     }
@@ -63,7 +58,7 @@ public class GameHelper {
         int select;
         rand=(int)((Math.random()*10000)%(gridSize-1));
         System.out.println("랜덤수 지정 " + rand);
-            if(grid.get(rand).isUse ==false) {
+            if(!grid.get(rand).isUse) {
                 System.out.println("미사용중확인");
                 grid.get(rand).isUse=true;
                 grid.get(rand).sub.setName(marine.getName());
@@ -86,28 +81,31 @@ public class GameHelper {
                             select=(int)((Math.random()*10000)%4);
                         }
                         else {
-                            switch(select) {
-                                case 0:
-                                    rand-=gridLength;
-                                    grid.get(rand).isUse=true;
+                            switch (select) {
+                                case 0 -> {
+                                    grid.get(rand).setNext(grid.get(rand-gridLength));
+                                    rand -= gridLength;
+                                    grid.get(rand).isUse = true;
                                     grid.get(rand).sub.setName(marine.getName());
-                                    break;
-                                case 1:
-                                    rand+=gridLength;
-                                    grid.get(rand).isUse=true;
+                                }
+                                case 1 -> {
+                                    grid.get(rand).setNext(grid.get(rand+gridLength));
+                                    rand += gridLength;
+                                    grid.get(rand).isUse = true;
                                     grid.get(rand).sub.setName(marine.getName());
-                                    break;
-                                case 2:
-                                    rand-=1;
-                                    grid.get(rand).isUse=true;
+                                }
+                                case 2 -> {
+                                    grid.get(rand).setNext(grid.get(rand-1));
+                                    rand -= 1;
+                                    grid.get(rand).isUse = true;
                                     grid.get(rand).sub.setName(marine.getName());
-
-                                    break;
-                                case 3:
-                                    rand+=1;
-                                    grid.get(rand).isUse=true;
+                                }
+                                case 3 -> {
+                                    grid.get(rand).setNext(grid.get(rand+1));
+                                    rand += 1;
+                                    grid.get(rand).isUse = true;
                                     grid.get(rand).sub.setName(marine.getName());
-                                    break;
+                                }
                             }
                             break;
                         }
@@ -120,11 +118,117 @@ public class GameHelper {
                 PlaceSubMarine(marine);
         }
     }
+    public void MoveSubMarine(SubM marine){
+        Scanner sc=new Scanner(System.in);
+        char[] move =new char[marine.getMove()+1];
+        System.out.println("이동키 입력 [w: 위, s: 아래, a: 좌, d: 우]");
+        move=sc.next().toCharArray();
+        Grid Head=null;
+        for(Grid i : grid) { //객체 헤더찾기
+            if(marine.getName() == i.sub.getName() && i.sub.getHeader()) {
+                Head=i;
+            }
+        }
+        Grid temp;
+        for(int i=0;i< move.length;i++) {
+            temp=Head;
+            switch (move[i]) {
+                case 'w': //상
+                    if(Head.grid-gridLength <0 || grid.get(Head.grid-gridLength).isUse) {
+                        System.out.println("상 이동 실패");
+                    }
+                    else {
+
+                        while(temp.getNext()!=null) {
+                            temp= temp.getNext();
+                        }
+                        int up= Head.grid-gridLength;
+                        temp.isUse=false;
+                        temp.sub.setName(null);
+                        grid.get(up).isUse=true;
+                        grid.get(up).sub.setName(temp.sub.getName());
+                        grid.get(up).sub.setHeader();
+                        grid.get(up).setNext(Head);
+                        Head.sub.reHeader();
+
+                        Head=grid.get(up);
+                    }
+                    break;
+                case 's': //하
+                    if(Head.grid+gridLength >gridSize || grid.get(Head.grid+gridLength).isUse) {
+                        System.out.println("하 이동 실패");
+                    }
+                    else {
+
+                        while(temp.getNext()!=null) {
+                            temp= temp.getNext();
+                        }
+                        int up= Head.grid+gridLength;
+                        temp.isUse=false;
+                        temp.sub.setName(null);
+                        grid.get(up).isUse=true;
+                        grid.get(up).sub.setName(temp.sub.getName());
+                        grid.get(up).sub.setHeader();
+                        grid.get(up).setNext(Head);
+                        Head.sub.reHeader();
+
+                        Head=grid.get(up);
+                    }
+                    break;
+
+                case 'd': //우
+                    if((Head.grid+1)%(gridLength)==0|| grid.get(Head.grid+gridLength).isUse) {
+                        System.out.println("우 이동 실패");
+                    }
+                    else {
+
+                        while(temp.getNext()!=null) {
+                            temp= temp.getNext();
+                        }
+                        int up= Head.grid+1;
+                        temp.isUse=false;
+                        temp.sub.setName(null);
+                        grid.get(up).isUse=true;
+                        grid.get(up).sub.setName(temp.sub.getName());
+                        grid.get(up).sub.setHeader();
+                        grid.get(up).setNext(Head);
+                        Head.sub.reHeader();
+
+                        Head=grid.get(up);
+                    }
+                    break;
+                case 'a': //좌
+                    if(((Head.grid-1)%(gridLength))==0|| grid.get(Head.grid+gridLength).isUse) {
+                        System.out.println("좌 이동 실패");
+                    }
+                    else {
+
+                        while(temp.getNext()!=null) {
+                            temp= temp.getNext();
+                        }
+                        int up= Head.grid-1;
+                        temp.isUse=false;
+                        temp.sub.setName(null);
+                        grid.get(up).isUse=true;
+                        grid.get(up).sub.setName(temp.sub.getName());
+                        grid.get(up).sub.setHeader();
+                        grid.get(up).setNext(Head);
+                        Head.sub.reHeader();
+
+                        Head=grid.get(up);
+                    }
+                    break;
+                default:
+                    continue;
+
+            }
+        }
+    }
     public void printGrid(){ //그리드 출력
         int cnt=0;
         for(Grid i : grid) {
             cnt++;
-            if(i.isUse==false) {
+            if(!i.isUse) {
                 System.out.printf("%3s ", i.pos);
             }
             else if(i.sub.getHeader()){
@@ -135,6 +239,7 @@ public class GameHelper {
             }
             if(cnt%gridLength==0)
                 System.out.println();
+
         }
 
     }

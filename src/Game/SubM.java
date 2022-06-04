@@ -2,12 +2,13 @@ package Game;
 //각 잠수함의 부모객체
 
 public class SubM {
-    private String name; //이름
-    private int cell,size,move,pos;
+    private String name=null; //이름
+    private int cell,size,move;
     private static final String body = "■";
     private boolean Header=false;
+    private SubM next;
     SubM() {
-        size=3;
+        size=1;
         move=4;
         cell=(size*2)+4;
     }
@@ -17,11 +18,12 @@ public class SubM {
 
 
 
-
-    public void setPos(int pos){this.pos=pos; }
-    public int getPos(){return pos;}
+    public int getMove(){return move;}
+    public void setNext(SubM next){this.next=next; }
+    public SubM getNext(){return next;}
     public boolean getHeader(){return Header;}
     public void setHeader(){Header=true;}
+    public void reHeader(){Header=false;}
     public int getSize(){return size;}
     public void setName (String n) { name = n; }
     public String getName() { return name; }
