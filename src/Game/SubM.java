@@ -8,7 +8,7 @@ public class SubM {
     private boolean Header=false;
     private SubM next;
     SubM() {
-        size=1;
+        size=3;
         move=4;
         cell=(size*2)+4;
     }
