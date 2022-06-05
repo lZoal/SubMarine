@@ -9,12 +9,14 @@ public class Launcher {
         GameHelper game = new GameHelper(10);
         SubM test= new SubM(),com1=new SubM(),com2=new SubM();
         test.setName("test");
-        game.printGrid();
         game.PlaceSubMarine(test);
+
         game.printGrid();
+        game.GridAttack(test);
         game.MoveSubMarine(test);
         game.printGrid();
         game.MoveSubMarine(test);
+        game.GridAttack(test);
         game.printGrid();
     }
 }

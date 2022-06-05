@@ -154,6 +154,7 @@ public class GameHelper {
                         index=temp.grid; //꼬리부분 좌표
                         Grid tSub= new Grid(grid.get(index).grid,grid.get(index).pos);
                         tSub.isUse=false;
+                        grid.get(up).sub.setCell(grid.get(index).sub.getCell());
                         grid.set(index,tSub);
                         grid.get(index).setNext(null);
                         grid.get(index).sub.setName(null);
@@ -184,6 +185,7 @@ public class GameHelper {
                         index=temp.grid; //꼬리부분 좌표
                         Grid tSub= new Grid(grid.get(index).grid,grid.get(index).pos);
                         tSub.isUse=false;
+                        grid.get(up).sub.setCell(grid.get(index).sub.getCell());
                         grid.set(index,tSub);
                         grid.get(index).setNext(null);
                         grid.get(index).sub.setName(null);
@@ -214,6 +216,7 @@ public class GameHelper {
                         index=temp.grid; //꼬리부분 좌표
                         Grid tSub= new Grid(grid.get(index).grid,grid.get(index).pos);
                         tSub.isUse=false;
+                        grid.get(up).sub.setCell(grid.get(index).sub.getCell());
                         grid.set(index,tSub);
                         grid.get(index).setNext(null);
                         grid.get(index).sub.setName(null);
@@ -243,6 +246,7 @@ public class GameHelper {
                         index=temp.grid; //꼬리부분 좌표
                         Grid tSub= new Grid(grid.get(index).grid,grid.get(index).pos);
                         tSub.isUse=false;
+                        grid.get(up).sub.setCell(grid.get(index).sub.getCell());
                         grid.set(index,tSub);
                         grid.get(index).setNext(null);
                         grid.get(index).sub.setName(null);
@@ -268,6 +272,34 @@ public class GameHelper {
             }
         }
     }
+    public void GridAttack(SubM marine) {//잠수함 공격
+        String atkPos;
+        Scanner sc= new Scanner(System.in);
+        System.out.println("공격할 좌표를 입력하세요. ex) e7 ");
+        int row=0;
+        int col=0;
+        atkPos=sc.next();
+        String temp;
+        while(alphabet.charAt(row)!=atkPos.charAt(0)) row++;
+        col=(int)atkPos.charAt(1)-48;
+        System.out.println(row +" "+ col);
+        for(int i=0;i<gridLength;i++) { //행 공격
+            temp=atkPos.charAt(0)+String.valueOf(i);
+            if(grid.get((row*gridLength)+i).isUse) {
+                grid.get((row*gridLength)+i).sub.setCell(grid.get(row*gridLength+i).sub.getCell()-1);
+                System.out.printf("%s에 객체 발견 및 공격 수행  남은 체력: %d\n",temp,grid.get((row*gridLength)+i).sub.getCell());
+            }
+        }
+        row=0;
+
+        for(int i=0;i<gridLength;i++) { //열 공격
+
+            if(grid.get((i*gridLength) + col).isUse) {
+                grid.get((i*gridLength)+col).sub.setCell(grid.get((i*gridLength)+col).sub.getCell()-1);
+                System.out.printf("%s에 객체 발견 및 공격 수행  남은 체력: %d\n",grid.get(i*gridLength +col).pos,grid.get((i*gridLength)+col).sub.getCell());
+            }
+        }
+    }
     public void printGrid(){ //그리드 출력
         int cnt=0;
         for(Grid i : grid) {
@@ -279,7 +311,7 @@ public class GameHelper {
                 System.out.printf("%3c ",'o');
             }
             else {
-                System.out.printf("%3s ",i.grid);
+                System.out.printf("%3s ",i.pos);
             }
             if(cnt%gridLength==0)
                 System.out.println();

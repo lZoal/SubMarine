@@ -10,14 +10,15 @@ public class SubM {
     SubM() {
         size=3;
         move=4;
-        cell=(size*2)+4;
+        cell=3;
     }
 
 
 
 
 
-
+    public int getCell() {return cell;}
+    public void setCell(int cell) {this.cell=cell;}
     public int getMove(){return move;}
     public void setNext(SubM next){this.next=next; }
     public SubM getNext(){return next;}
